@@ -11,6 +11,13 @@ import { Tasks } from '../api/tasks.js';
 import Task from './Task.jsx';
 
 class App extends Component{
+  constructor(props){
+    super(props);
+
+    this.state = {
+      hideCompleted : false,
+    }
+  }
   // getTasks(){
   //   return [
   //     {_id: 1, text: 'This is task 1' },
@@ -34,6 +41,13 @@ class App extends Component{
     });
 
     ReactDOM.findDOMNode(this.refs.textInput).value = '';
+
+  }
+
+  toogleHideCompleted(){
+    this.setState = {
+      hideCompleted : !this.state.hideCompleted,
+    }
   }
   renderTasks(){
     return this.props.tasks.map((task) => (
@@ -46,6 +60,17 @@ class App extends Component{
       <div className="container">
         <header>
           <h1>Todo List</h1>
+
+          <label>
+            <input
+            type = "checkbox"
+            readOnly
+            checked = { this.state.hideCompleted }
+            onClick = { this.toogleHideCompleted.bind(this) }
+            />
+
+            Hide Completed Task
+          </label>
           <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
             <input
               type = "text"
