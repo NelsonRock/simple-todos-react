@@ -22,6 +22,10 @@ export default class Task extends Component{
 
     return(
       <li className = {taskClassName}>
+          <button className = "delete" onClick = { this.deleteTask.bind(this) }>
+            &times;
+          </button>
+
           <input
             type = "checkbox"
             readOnly
