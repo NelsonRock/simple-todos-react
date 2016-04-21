@@ -10,6 +10,9 @@ import { Tasks } from '../api/tasks.js';
 
 import Task from './Task.jsx';
 
+//import AccountUIWarpper to use Blaze accounts-ui in React component
+import AccountsUIWrapper from './AccountsUIWrapper.jsx';
+
 class App extends Component{
   constructor(props){
     super(props);
@@ -65,6 +68,9 @@ class App extends Component{
     return(
       <div className="container">
         <header>
+
+          <AccountsUIWrapper />
+
           <h1>Todo List { this.props.incompletedCountTasks }</h1>
 
           <label className="hide-completed">
