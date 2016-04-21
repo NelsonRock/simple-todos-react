@@ -15,8 +15,8 @@ class App extends Component{
     super(props);
 
     this.state = {
-      hideCompleted : false,
-    }
+      hideCompleted: false,
+    };
   }
   // getTasks(){
   //   return [
@@ -44,13 +44,19 @@ class App extends Component{
 
   }
 
-  toogleHideCompleted(){
-    this.setState = {
-      hideCompleted : !this.state.hideCompleted,
-    }
+  toggleHideCompleted(){
+    this.setState({
+       hideCompleted: !this.state.hideCompleted,
+     });
+    // this.forceUpdate();
   }
   renderTasks(){
-    return this.props.tasks.map((task) => (
+
+    let filteredTasks = this.props.tasks;
+    if (this.state.hideCompleted) {
+      filteredTasks = filteredTasks.filter(task => !task.checked);
+    }
+    return filteredTasks.map((task) => (
       <Task key={task._id} task={task} />
     ));
   }
@@ -61,14 +67,13 @@ class App extends Component{
         <header>
           <h1>Todo List</h1>
 
-          <label>
+          <label className="hide-completed">
             <input
             type = "checkbox"
             readOnly
-            checked = { this.state.hideCompleted }
-            onClick = { this.toogleHideCompleted.bind(this) }
+            checked = { this.props.hideCompleted }
+            onChange = { this.toggleHideCompleted.bind(this) }
             />
-
             Hide Completed Task
           </label>
           <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
@@ -94,5 +99,5 @@ App.propTypes = {
 export default createContainer(() => {
   return {
     tasks: Tasks.find({}, { sort : { createdAt : -1 } }).fetch(),
-  };
+  }
 }, App);
