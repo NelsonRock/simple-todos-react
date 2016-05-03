@@ -50,15 +50,44 @@ class App extends Component{
      });
     // this.forceUpdate();
   }
+
+  renderHideTask(){
+    let tasksCopy = this.props.tasks,
+        output = <small className='hide-completed'>There are not taks yet, Loggin !</small>,
+        label = <label className="hide-completed">
+          <input
+          type = "checkbox"
+          readOnly
+          checked = { this.props.hideCompleted }
+          onChange = { this.toggleHideCompleted.bind(this) }
+          />
+          Hide Completed Task
+        </label>;
+    console.log(tasksCopy.length);
+    if(tasksCopy === 0){
+      return label;
+    } else {
+      return output;
+    }
+  }
+
   renderTasks(){
 
     let filteredTasks = this.props.tasks;
     if (this.state.hideCompleted) {
       filteredTasks = filteredTasks.filter(task => !task.checked);
     }
-    return filteredTasks.map((task) => (
-      <Task key={task._id} task={task} />
-    ));
+    return filteredTasks.map((task) => {
+      const currentUser = this.props.currentUser && this.props.currentUser._id;
+      const showPrivateButton = task.owner === currentUser;
+      return (
+        <Task
+          key={task._id}
+          task={task}
+          showPrivateButton={showPrivateButton}
+          />
+      )
+    });
   }
 
   render(){
@@ -70,15 +99,8 @@ class App extends Component{
 
           <h1>Todo List { this.props.incompletedCountTasks }</h1>
 
-          <label className="hide-completed">
-            <input
-            type = "checkbox"
-            readOnly
-            checked = { this.props.hideCompleted }
-            onChange = { this.toggleHideCompleted.bind(this) }
-            />
-            Hide Completed Task
-          </label>
+          { this.renderHideTask() }
+
           { this.props.currentUser ?
             <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
               <input
