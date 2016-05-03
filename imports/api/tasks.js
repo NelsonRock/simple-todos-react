@@ -36,7 +36,7 @@ Meteor.methods({
 
   'tasks.setPrivate'(taskId, setToPrivate){
     check(taskId, String);
-    check(setToPrivate, Boolean;
+    check(setToPrivate, Boolean);
 
     const tasks = Tasks.findOne( taskId );
 
@@ -51,6 +51,7 @@ Meteor.methods({
      );
 
   },
+  
 });
 Tasks.allow({
   insert: function(){
