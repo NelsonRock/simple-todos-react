@@ -6,7 +6,12 @@ export const Tasks = new Mongo.Collection("tasks");
 
 if(Meteor.isServer){
   Meteor.publish("tasks", function publishingTasks(){
-    return Tasks.find();
+    return Tasks.find({
+      $or: [
+        { private: { $ne: true } },
+        { owner: { this.userId },
+      ],
+    });
   });
 }
 
@@ -47,9 +52,9 @@ Meteor.methods({
     check(taskId, String);
     check(setToPrivate, Boolean);
 
-    const tasks = Tasks.findOne( taskId );
+    const task = Tasks.findOne( taskId );
 
-    if(task.owner !== this.userId()) {
+    if(task.owner !== this.userId ) {
       throw new Meteor.Error("no-authorized");
     }
 
