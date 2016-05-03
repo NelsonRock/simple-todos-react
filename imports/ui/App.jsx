@@ -114,6 +114,7 @@ App.propTypes = {
 };
 
 export default createContainer(() => {
+  Meteor.subscribe("tasks");
   return {
     tasks: Tasks.find({}, { sort : { createdAt : -1 } }).fetch(),
     incompletedCountTasks: Tasks.find({ checked: { $ne: true } }).count(),
