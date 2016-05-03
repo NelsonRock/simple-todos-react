@@ -27,6 +27,7 @@ Meteor.methods({
       createdAt: new Date(),
       owner: Meteor.user(),
       username: Meteor.user().username,
+      private: true,
     });
 
   },
@@ -34,12 +35,24 @@ Meteor.methods({
   'tasks.remove'(taskId){
     check(taskId, String);
 
+    const task = Tasks.findOne(taskId);
+    if (task.private && task.owner !== this.userId) {
+      // If the task is private, make sure only the owner can delete it
+      throw new Meteor.Error('not-authorized');
+    }
+
     Tasks.remove(taskId);
   },
 
   'tasks.setChecked'(taskId, setChecked){
     check(taskId, String);
     check(setChecked, Boolean);
+
+    const task = Tasks.findOne(taskId);
+    if (task.private && task.owner !== this.userId) {
+      // If the task is private, make sure only the owner can checked it
+      throw new Meteor.Error('not-authorized');
+    }
 
     Tasks.update(taskId,
       {
