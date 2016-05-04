@@ -17,7 +17,12 @@ export default class Task extends Component{
         Bert.alert( err.reason, 'danger', 'growl-top-right' );
       }
       else{
-        Bert.alert('Ckecked!', 'success', 'growl-top-right', 'fa-thumbs-o-up')
+        if(!this.props.task.checked ){
+          Bert.alert('UnCkecked!', 'success', 'growl-top-right', 'fa-thumbs-o-up');
+        }
+        else {
+            Bert.alert('Ckecked!', 'success', 'growl-top-right', 'fa-thumbs-o-up');
+        }
       }
     });
   }
