@@ -66,7 +66,7 @@ class App extends Component{
           task={task}
           showPrivateButton={showPrivateButton}
           />
-      )
+      );
     });
   }
 
