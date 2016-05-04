@@ -8,17 +8,13 @@ import classnames from 'classnames';
 // Tas k component is a todo item
 export default class Task extends Component{
 
-  toggleChecked(event){
+  toggleChecked(){
     Meteor.call("tasks.setChecked", this.props.task.id, !this.props.task.checked);
   }
 
   deleteTask(){
     Meteor.call("tasks.remove", this.props.task.id);
 
-  }
-
-  displayUsername(){
-    return this.props.task.username ? <strong> { this.props.task.username } : </strong> : '';
   }
 
   togglePrivate(){
@@ -47,8 +43,7 @@ export default class Task extends Component{
 
 
           <span className = "text">
-            { this.displayUsername()  }
-            <span>{this.props.task.text}</span>
+            <strong>{ this.props.task.username }</strong>{this.props.task.text}
           </span>
 
           { this.props.showPrivateButton ? (
