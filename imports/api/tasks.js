@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import { Mongo } from 'meteor/mongo';
 
 import { check } from 'meteor/check';
@@ -35,7 +37,7 @@ Meteor.methods({
     check(taskId, String);
 
     const task = Tasks.findOne(taskId);
-    if (task.private && task.owner !== this.userId) {
+    if (task.owner !== this.userId) {
       // If the task is private, make sure only the owner can delete it
       throw new Meteor.Error('not-authorized');
     }
@@ -48,7 +50,7 @@ Meteor.methods({
     check(setChecked, Boolean);
 
     const task = Tasks.findOne(taskId);
-    if (task.private && task.owner !== this.userId) {
+    if (task.owner !== this.userId) {
       // If the task is private, make sure only the owner can checked it
       throw new Meteor.Error('not-authorized');
     }
@@ -62,7 +64,7 @@ Meteor.methods({
 
     const task = Tasks.findOne(taskId);
 
-    if(task.owner !== this.userId ) {
+    if(task.owner !== this.userId) {
       throw new Meteor.Error("no-authorized");
     }
 
@@ -70,15 +72,4 @@ Meteor.methods({
 
   },
 
-});
-Tasks.allow({
-  insert: function(){
-    return true;
-  },
-  update: function(){
-    return true;
-  },
-  remove: function(){
-    return true;
-  }
 });
