@@ -18,7 +18,7 @@ if(Meteor.isServer){
 Meteor.methods({
   'tasks.insert'(text){
     check(text, String);
-    if(!Meteor.userId()){
+    if(!this.userId){
       throw new Meteor.Error('no-authorized');
     }
 
@@ -27,7 +27,6 @@ Meteor.methods({
       createdAt: new Date(),
       owner: Meteor.user(),
       username: Meteor.user().username,
-      private: true,
     });
 
   },
@@ -54,28 +53,20 @@ Meteor.methods({
       throw new Meteor.Error('not-authorized');
     }
 
-    Tasks.update(taskId,
-      {
-        $set: { checked : setChecked }
-      }
-    );
+    Tasks.update(taskId, { $set: { checked: setChecked } } );
   },
 
   'tasks.setPrivate'(taskId, setToPrivate){
     check(taskId, String);
     check(setToPrivate, Boolean);
 
-    const task = Tasks.findOne( taskId );
+    const task = Tasks.findOne(taskId);
 
     if(task.owner !== this.userId ) {
       throw new Meteor.Error("no-authorized");
     }
 
-    Tasks.update( taskId,
-       {
-         $set: { private : setToPrivate }
-       }
-     );
+    Tasks.update( taskId, { $set: { private : setToPrivate } } );
 
   },
 
