@@ -21,7 +21,7 @@ Meteor.methods({
   'tasks.insert'(text){
     check(text, String);
     if(!this.userId){
-      throw new Meteor.Error('no-authorized');
+      throw new Meteor.Error('no-authorized', 'You must be logge in!!');
     }
 
     Tasks.insert({
@@ -39,7 +39,7 @@ Meteor.methods({
     const task = Tasks.findOne(taskId);
     if (task.owner !== this.userId) {
       // If the task is private, make sure only the owner can delete it
-      throw new Meteor.Error('not-authorized');
+      throw new Meteor.Error('not-authorized', 'You should be owner to remove this task');
     }
 
     Tasks.remove(taskId);
@@ -52,7 +52,7 @@ Meteor.methods({
     const task = Tasks.findOne(taskId);
     if (task.owner !== this.userId) {
       // If the task is private, make sure only the owner can checked it
-      throw new Meteor.Error('not-authorized');
+      throw new Meteor.Error('not-authorized', 'You should be owner to checke this task');
     }
 
     Tasks.update(taskId, { $set: { checked: setChecked } } );
@@ -65,7 +65,7 @@ Meteor.methods({
     const task = Tasks.findOne(taskId);
 
     if(task.owner !== this.userId) {
-      throw new Meteor.Error("no-authorized");
+      throw new Meteor.Error('no-authorized', 'You should be owner to make private this task');
     }
 
     Tasks.update( taskId, { $set: { private : setToPrivate } } );
